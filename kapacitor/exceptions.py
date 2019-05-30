@@ -4,7 +4,7 @@ from __future__ import print_function
 
 
 class KapacitorClientError(Exception):
-    """Raised when error occurs on the client side or in the request"""
+    '''Raised when error occurs on the client side or in the request'''
     def __init__(self, content, code=None):
         if isinstance(content, type(b'')):
             content = content.decode('UTF-8', 'replace')
@@ -20,12 +20,12 @@ class KapacitorClientError(Exception):
 
 
 class KapacitorServerError(Exception):
-    """Raised when error occurs on server side"""
+    '''Raised when error occurs on server side'''
     def __init__(self, content):
         super(KapacitorServerError, self).__init__(content)
 
 
 class ImplementationError(Exception):
-    """Usually raised when some method is not yet implemented"""
+    '''Usually raised when some method is not yet implemented'''
     def __init__(self, content):
         super(ImplementationError, self).__init__(content)

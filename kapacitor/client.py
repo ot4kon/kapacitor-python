@@ -23,7 +23,7 @@ class KapacitorClient(object):
         self.__host = host,
         self.__port = port,
         self.__proto = proto
-        self.__url = "%s://%s:%s/kapacitor/v1" % (proto, host, port)
+        self.__url = '%s://%s:%s/kapacitor/v1' % (proto, host, port)
 
         self.__session = requests.Session()
 
