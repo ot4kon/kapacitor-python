@@ -1,0 +1,5 @@
+# required to run tests - extends requirements.txt
+
+-r requirements.txt
+mock
+nose

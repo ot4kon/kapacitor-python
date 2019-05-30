@@ -1,0 +1,6 @@
+# required for active development - extends requirements.txt and requirements-test.txt
+
+-r requirements.txt
+-r requirements-test.txt
+setuptools
+wheel

@@ -7,9 +7,9 @@ from .exceptions import KapacitorClientError, KapacitorServerError, Implementati
 
 class KapacitorTemplateClient(object):
     def __init__(self, url, session):
-        self.__path = '/templates'
-        self.__url = url
-        self.__session = session
+        self._path = '/templates'
+        self._url = url
+        self._session = session
 
     def define(self):
         raise ImplementationError('Method "define" has not been yet implemented!')

@@ -20,34 +20,18 @@ class KapacitorClient(object):
                  port=9092,
                  proto='http'
                  ):
-        self.__host = host,
-        self.__port = port,
-        self.__proto = proto
-        self.__url = '%s://%s:%s/kapacitor/v1' % (proto, host, port)
+        self._host = host,
+        self._port = port,
+        self._proto = proto
+        self._url = '%s://%s:%s/kapacitor/v1' % (proto, host, port)
 
-        self.__session = requests.Session()
+        self._session = requests.Session()
 
-        self.tasks = KapacitorTaskClient(self.__url, self.__session)
+        self.tasks = KapacitorTaskClient(self._url, self._session)
         self.task = self.tasks  # alias
-        self.templates = KapacitorTemplateClient(self.__url, self.__session)
+        self.templates = KapacitorTemplateClient(self._url, self._session)
         self.template = self.templates  # alias
 
     @property
-    def _host(self):
-        return self.__host
-
-    @property
-    def _port(self):
-        return self.__port
-
-    @property
-    def _proto(self):
-        return self.__proto
-
-    @property
-    def _url(self):
-        return self.__url
-
-    @property
     def url(self):
-        return self.__url
+        return self._url

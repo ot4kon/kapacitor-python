@@ -2,8 +2,8 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import json
 import requests
-from json import dumps
 from six.moves.urllib.parse import urljoin
 
 from .common import join_path
@@ -13,19 +13,16 @@ from .exceptions import KapacitorClientError, KapacitorServerError, Implementati
 # TODO: create parent class for specific clients like this one and TemplateClient
 class KapacitorTaskClient(object):
     def __init__(self, url, session):
-        self.__path = 'tasks'
-        self.__url = join_path(url, self.__path)
-        self.__session = session
-
-    @property
-    def _url(self):
-        return self.__url
+        self._path = 'tasks'
+        self._url = join_path(url, self._path)
+        self._session = session
 
     @property
     def url(self):
         return self._url
 
     # TODO: make retry support and timeout support
+    # TODO: move this to separate class that will use requests as dependency and will declare session object?
     def request(self, url, method='GET', params=None, data=None, headers=None):
         '''Makes request to Kapacitor instance
 
@@ -43,7 +40,7 @@ class KapacitorTaskClient(object):
         :rtype: dict
         '''
         try:
-            response = self.__session.request(
+            response = self._session.request(
                 method=method,
                 url=url,
                 data=data,
@@ -58,7 +55,7 @@ class KapacitorTaskClient(object):
             raise
 
         # TODO: better support for other HTTP codes, also check if status code is valid
-        if response.status_code > 400:
+        if response.status_code >= 400:
             raise KapacitorServerError(response.content)
 
         return {
@@ -87,9 +84,9 @@ class KapacitorTaskClient(object):
         :rtype: dict
         '''
         return self.request(
-            url=self.__url,
+            url=self._url,
             method='POST',
-            data=dumps(data),
+            data=json.dumps(data),
         )
 
     def delete(self, task_id):
@@ -100,7 +97,7 @@ class KapacitorTaskClient(object):
         :returns: response dictionary
         :rtype: dict
         '''
-        url = join_path(self.__url, task_id)
+        url = join_path(self._url, task_id)
 
         return self.request(
             url=url,
@@ -115,12 +112,12 @@ class KapacitorTaskClient(object):
         :returns: response dictionary
         :rtype: dict
         '''
-        url = join_path(self.__url, task_id)
+        url = join_path(self._url, task_id)
 
         return self.request(
             url=url,
             method='PATCH',
-            data=dumps({'status': 'disabled'})
+            data=json.dumps({'status': 'disabled'})
         )
 
     def enable(self, task_id):
@@ -131,12 +128,12 @@ class KapacitorTaskClient(object):
         :returns: response dictionary
         :rtype: dict
         '''
-        url = join_path(self.__url, task_id)
+        url = join_path(self._url, task_id)
 
         return self.request(
             url=url,
             method='PATCH',
-            data=dumps({'status': 'enabled'})
+            data=json.dumps({'status': 'enabled'})
         )
 
     def force_update(self, task_id, data):
@@ -166,7 +163,7 @@ class KapacitorTaskClient(object):
         :returns: response dictionary
         :rtype: dict
         '''
-        url = join_path(self.__url, task_id)
+        url = join_path(self._url, task_id)
 
         return self.request(
             url=url,
@@ -182,9 +179,9 @@ class KapacitorTaskClient(object):
         :rtype: dict
         '''
         if not pattern:
-            url = self.__url
+            url = self._url
         else:
-            url = join_path(self.__url, pattern)
+            url = join_path(self._url, pattern)
 
         return self.request(
             url=url,
@@ -214,10 +211,10 @@ class KapacitorTaskClient(object):
         :returns: response dictionary
         :rtype: dict
         '''
-        url = join_path(self.__url, task_id)
+        url = join_path(self._url, task_id)
 
         return self.request(
             url=url,
             method='PATCH',
-            data=dumps(data)
+            data=json.dumps(data)
         )
