@@ -27,6 +27,10 @@ class KapacitorClient(object):
 
         self._session = requests.Session()
 
+        # TODO: implement aliases so it will be possible to use both:
+        # self.tasks.list()
+        # self.list.tasks()
+
         self.tasks = KapacitorTaskClient(self._url, self._session)
         self.task = self.tasks  # alias
         self.templates = KapacitorTemplateClient(self._url, self._session)
